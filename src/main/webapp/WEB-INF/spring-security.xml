@@ -1,0 +1,43 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!--Athentication-->
+    <http auto-config="true">
+        <remember-me key="student-key" remember-me-parameter="remember_me"/>
+        <form-login login-page="/login.do" username-parameter="username" password-parameter="password"
+                    default-target-url="/index.do" authentication-failure-url="/login.do?error"
+                    authentication-failure-handler-ref="serverErrorFailurHandler"/>
+            <intercept-url pattern="/index.do" access="ROLE_STUDENT_MEMBER"/>
+            <intercept-url pattern="/hello.do" access="ROLE_STUDENT_MEMBER"/>
+        <logout delete-cookies="JSESSIONID" logout-url="/logout.do"/>
+    </http>
+
+    <!--Basic Authentication-->
+    <!--<http auto-config="true">-->
+        <!--&lt;!&ndash;<remember-me key="student-key" remember-me-parameter="remember_me"/>&ndash;&gt;-->
+        <!--<intercept-url pattern="/index.do" access="ROLE_STUDENT_MEMBER"/>-->
+        <!--<http-basic/>-->
+    <!--</http>-->
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="student" authorities="ROLE_STUDENT_MEMBER" password="maxim"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="serverErrorFailurHandler"
+                class="ru.javageek.ddm.security.ServerErrorFailurHandler"/>
+
+    <beans:bean id="logoutHandler"
+                class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+        <beans:property name="targetUrlParameter" value="redirectTo"/>
+    </beans:bean>
+
+</beans:beans>

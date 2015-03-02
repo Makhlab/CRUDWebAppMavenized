@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="CRUDWebAppMavenized:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="CRUDWebAppMavenized.war">
+      <element id="artifact" artifact-name="CRUDWebAppMavenized:war exploded" />
+    </root>
+  </artifact>
+</component>
